@@ -1,25 +1,26 @@
-import logo from './logo.svg';
-import './App.css';
+import axios from "axios";
+import { useEffect, useState } from "react";
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+export default function Home() {
+  const [words, setWords] = useState(null);
+  const [website, setWebsite] = useState("https://nkiri.com");
+  const [keyword, setKeyword] = useState("lawyer");
+  useEffect(() => {
+    const options = {
+      method: "GET",
+      url: "http://localhost:3001/results",
+      params: { website: website, keyword: keyword },
+    };
+
+    axios
+      .request(options)
+      .then((response) => {
+        console.log(response.data);
+        setWords(response.data);
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  }, []);
+  return <div>{words}</div>;
 }
-
-export default App;
